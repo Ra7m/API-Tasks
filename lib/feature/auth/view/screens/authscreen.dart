@@ -2,11 +2,10 @@
 
 import 'package:category/core/widgets/validator.dart';
 import 'package:category/feature/auth/cubit/auth_cubit.dart';
-import 'package:category/feature/auth/view/widgets/Customtextfields.dart';
+import 'package:category/feature/auth/cubit/auth_state.dart';
 import 'package:category/feature/auth/view/widgets/customtextfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -52,16 +51,17 @@ class _AuthScreenState extends State<AuthScreen> {
       create: (context) => AuthCubit(),
       child: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          if (state is AuthSuccess) {
+          if (state is AuthSucessState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                  backgroundColor: Colors.blue,
-                  content: Text(state.userData["message"])),
+                  backgroundColor: Colors.brown,
+                  content: Text(state.userdata["message"])),
             );
           }
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 243, 218, 209),
             body: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
@@ -76,14 +76,11 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     child: Column(
                       children: [
-                        Text("Register"),
+                        Text(
+                          "Register",
+                        ),
                         SizedBox(
                           height: 5,
-                        ),
-                        Text(
-                          "Fill your information below",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400, color: Colors.grey),
                         ),
                         SizedBox(
                           height: 10,
@@ -91,73 +88,69 @@ class _AuthScreenState extends State<AuthScreen> {
                       ],
                     ),
                   ),
-                  Customtextfield(
-perfix:  Icons.account_circle,
- validator:   (value) {
+                  CustomTextField(
+                    controller: nameController,
+                    validator: (value) {
                       MyValidators.displayNameValidator(value);
                     },
-
- textInputType: TextInputType.text,
-  label:"Name",
-   hint:"Enter your name",
-   controller: nameController),
-
-   //=============================================
+                    label: "Name",
+                    hint: "Enter your name",
+                    prefix: Icons.account_circle,
+                  ),
                   const SizedBox(height: 20),
-                  Customtextfield(
- validator: (value) {
+                  CustomTextField(
+                    controller: nationalIdController,
+                    validator: (value) {
                       MyValidators.nationalIdValidator(value);
                     },
-                    textInputType: TextInputType.number,
+                    keyboard: TextInputType.number,
                     label: "National ID",
                     hint: "Enter your ID",
-                    perfix: Icons.perm_identity_outlined,
-
-    controller: nationalIdController),
-    //===========================================================
+                    prefix: Icons.perm_identity_outlined,
+                  ),
                   const SizedBox(height: 20),
-                  Customtextfield(
+                  CustomTextField(
                     controller: emailController,
                     validator: (value) {
                       MyValidators.phoneValidator(value);
                     },
-                     textInputType: TextInputType.emailAddress,
+                    keyboard: TextInputType.emailAddress,
                     label: "Email",
                     hint: "example@gmail.com",
-                    perfix: Icons.email,
+                    prefix: Icons.email,
                   ),
                   const SizedBox(height: 20),
-                  Customtextfield(
+                  CustomTextField(
                     controller: phoneController,
                     validator: (value) {
                       MyValidators.phoneValidator(value);
                     },
-                    textInputType: TextInputType.phone,
+                    keyboard: TextInputType.phone,
                     label: "Phone Number",
                     hint: "Enter your phone",
-                    perfix: Icons.phone,
+                    prefix: Icons.phone,
                   ),
                   const SizedBox(height: 20),
-                  Customtextfield(
+                  CustomTextField(
                     controller: genderController,
                     validator: (value) {
                       MyValidators.emailValidator(value);
                     },
-                    textInputType: TextInputType.emailAddress,
+                    keyboard: TextInputType.emailAddress,
                     label: "Gender",
                     hint: "Enter Gender",
-                    perfix: Icons.person,
+                    prefix: Icons.person,
                   ),
                   const SizedBox(height: 20),
-                  Customtfield(
+                  CustomTextField(
                     validator: (value) {
                       MyValidators.passwordValidator(value);
                     },
-                    textInputType: TextInputType.visiblePassword,
+                    keyboard: TextInputType.visiblePassword,
                     obscureText: visible,
                     label: "Password",
                     hint: "Enter a password",
-                    perfix: Icons.lock,
+                    prefix: Icons.lock,
                     suffix: IconButton(
                         onPressed: () {
                           visible = !visible;
@@ -173,37 +166,37 @@ perfix:  Icons.account_circle,
                     controller: passwordController,
                   ),
                   const SizedBox(height: 20),
-                  Customtextfield(
+                  CustomTextField(
                     controller: tokenController,
                     validator: (value) {
                       MyValidators.tokenValidator(value);
                     },
                     label: "Token",
                     hint: "Enter a token",
-                    perfix: Icons.token, textInputType: TextInputType.number,
+                    prefix: Icons.token,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      if (state is AuthSuccess) {
+                      if (state is AuthSucessState) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              backgroundColor: Colors.blue,
-                              content: Text(state.userData["message"])),
+                              backgroundColor: Colors.brown,
+                              content: Text(state.userdata["message"])),
                         );
                       }
                       AuthCubit().postDataCubit(
-                        nameData: nameController.text,
-                        emailData: emailController.text,
-                        genderData: genderController.text,
-                        nationalIdData: nationalIdController.text,
-                        passwordData: passwordController.text,
-                        phoneData: phoneController.text,
-                        profileImageData: profileImageController.text,
-                        tokenData: tokenController.text,
+                        namedata: nameController.text,
+                        emaildata: emailController.text,
+                        genderdata: genderController.text,
+                        nationalIddata: nationalIdController.text,
+                        passworddata: passwordController.text,
+                        phonedata: phoneController.text,
+                        profileImagedata: profileImageController.text,
+                        tokendata: tokenController.text,
                       );
                     },
-                    child: const Text("SinUp"),
+                    child: const Text("Sign Up"),
                   ),
                 ]),
               ),
