@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:category/feature/auth/model/data_auth/data_auth.dart';
 import 'package:meta/meta.dart';

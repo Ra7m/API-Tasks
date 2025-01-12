@@ -36,7 +36,7 @@ class CategoryScreen extends StatelessWidget {
                 },
               );
             } else if (state is CategoryLoading) {
-              return Center(child: const CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (state is CategoryError) {
               return Center(
                 child: Text(state.error),
